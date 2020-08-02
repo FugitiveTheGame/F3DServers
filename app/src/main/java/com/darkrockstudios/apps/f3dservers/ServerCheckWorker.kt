@@ -21,13 +21,14 @@ class ServerCheckWorker(private val context: Context, params: WorkerParameters)
 
 	override suspend fun doWork(): Result = coroutineScope {
 		val serverResult = API.getServers()
-		if(serverResult != null && serverResult.isNotEmpty())
+		if(serverResult != null)
 		{
 			val missingServers = API.missingOfficialServers(serverResult)
 			if(missingServers.isNotEmpty())
 			{
 				postNotification(missingServers)
 			}
+
 			Result.success()
 		}
 		else
