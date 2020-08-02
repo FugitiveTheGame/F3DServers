@@ -20,7 +20,7 @@
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@{server.is_joinable + ` joinable`}"/>
+			android:text="@{`joinable: ` + server.is_joinable}"/>
 	</LinearLayout>
 
 </layout>

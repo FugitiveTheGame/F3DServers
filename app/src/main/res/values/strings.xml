@@ -6,6 +6,11 @@
 	<string name="notification_channel_title">F3D Server Down</string>
 	<string name="notification_channel_description">Notifications when a official server is down</string>
 
+	<string name="worker_scheduled">Hourly check scheduled</string>
+	<string name="worker_removed">Hourly check disabled</string>
+
+	<string name="refresh">Refreshing</string>
+
 	<string name="action_settings">Settings</string>
-	<string name="scheduled">Scheduled</string>
+	<string name="scheduled">Hourly Check</string>
 </resources>

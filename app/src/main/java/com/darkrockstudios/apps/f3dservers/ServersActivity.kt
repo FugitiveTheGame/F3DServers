@@ -2,6 +2,7 @@ package com.darkrockstudios.apps.f3dservers
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
 import com.google.android.material.appbar.CollapsingToolbarLayout
@@ -37,7 +38,7 @@ class ServersActivity: AppCompatActivity()
 		toolbar_layout.title = title
 		fab.setOnClickListener { view ->
 			doRefresh()
-			Snackbar.make(view, "Refreshing", Snackbar.LENGTH_SHORT).show()
+			Snackbar.make(view, R.string.refresh, Snackbar.LENGTH_SHORT).show()
 		}
 
 		workManager = WorkManager.getInstance(this)
@@ -80,12 +81,17 @@ class ServersActivity: AppCompatActivity()
 					.build()
 
 			workManager.enqueueUniquePeriodicWork(WORK_NAME, ExistingPeriodicWorkPolicy.REPLACE, request)
+
+			withContext(Dispatchers.Main) {
+				Snackbar.make(root_servers_view, R.string.worker_scheduled, Snackbar.LENGTH_LONG).show()
+			}
 		}
 	}
 
 	private fun removeWorker()
 	{
 		workManager.cancelUniqueWork(WORK_NAME)
+		Snackbar.make(root_servers_view, R.string.worker_removed, Snackbar.LENGTH_LONG).show()
 	}
 
 	private fun updateIsScheduled()
@@ -102,6 +108,10 @@ class ServersActivity: AppCompatActivity()
 
 	private fun doRefresh()
 	{
+		servers.clear()
+		adapter.notifyDataSetChanged()
+		progress_bar.visibility = View.VISIBLE
+
 		MainScope().launch {
 			refresh()
 		}
@@ -114,5 +124,7 @@ class ServersActivity: AppCompatActivity()
 			servers.addAll(newServers)
 			adapter.notifyDataSetChanged()
 		}
+
+		progress_bar.visibility = View.GONE
 	}
 }
