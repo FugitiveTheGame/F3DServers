@@ -6,4 +6,6 @@ data class Server(
 		var name: String,
 		var game_version: Int,
 		var is_joinable: Boolean,
+		var current_players: Int,
+		var max_players: Int,
 		var last_seen: String)

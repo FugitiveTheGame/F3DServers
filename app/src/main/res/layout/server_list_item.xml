@@ -1,26 +1,58 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<data>
-		<variable name="server" type="com.darkrockstudios.apps.f3dservers.Server"/>
+
+		<variable
+			name="server"
+			type="com.darkrockstudios.apps.f3dservers.Server" />
 	</data>
 
-	<LinearLayout
+	<com.google.android.material.card.MaterialCardView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="@dimen/text_margin"
-		android:orientation="vertical">
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@{server.name}"/>
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@{server.ip}"/>
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@{`joinable: ` + server.is_joinable}"/>
-	</LinearLayout>
+		android:layout_margin="@dimen/default_margin"
+		android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+		app:cardElevation="3dp"
+		app:cardCornerRadius="5dp">
 
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="@dimen/default_margin"
+			android:orientation="vertical">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				style="?textAppearanceHeadline5"
+				tools:text="Server Name"
+				android:text="@{server.name}" />
+
+			<TextView
+				style="?textAppearanceSubtitle1"
+				android:textStyle="bold"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				tools:text="players: 10/10"
+				android:text="@{`Players: ` + server.current_players + ` / ` + server.max_players}" />
+
+			<TextView
+				style="?textAppearanceSubtitle2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				tools:text="192.168.1.1"
+				android:text="@{server.ip}" />
+
+			<TextView
+				style="?textAppearanceBody1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				tools:text="joinable: true"
+				android:textStyle="italic"
+				android:text="@{`joinable: ` + server.is_joinable}" />
+
+		</LinearLayout>
+	</com.google.android.material.card.MaterialCardView>
 </layout>
