@@ -42,8 +42,9 @@
 				style="?textAppearanceSubtitle2"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				tools:text="192.168.1.1"
-				android:text="@{server.ip}" />
+				android:layout_marginTop="8dp"
+				tools:text="192.168.1.1:31000"
+				android:text="@{server.ip+`:`+server.port}" />
 
 			<TextView
 				style="?textAppearanceBody1"
