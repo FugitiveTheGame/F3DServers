@@ -13,4 +13,9 @@
 
 	<string name="action_settings">Settings</string>
 	<string name="scheduled">Hourly Check</string>
+	<string name="restart_official_1">Restart Official #1</string>
+	<string name="restart_official_2">Restart Official #2</string>
+	<string name="password_save">Save</string>
+	<string name="server_password_hint">Server Password</string>
+	<string name="set_password">Set Password</string>
 </resources>

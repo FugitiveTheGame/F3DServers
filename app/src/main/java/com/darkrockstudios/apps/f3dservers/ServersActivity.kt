@@ -1,19 +1,17 @@
 package com.darkrockstudios.apps.f3dservers
 
 import android.os.Bundle
-import android.util.Log
+import android.preference.PreferenceManager
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_servers.*
 import kotlinx.android.synthetic.main.server_list.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.time.Duration
 
 
@@ -58,6 +56,36 @@ class ServersActivity: AppCompatActivity()
 		}
 
 		doRefresh()
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu): Boolean
+	{
+		val inflater: MenuInflater = menuInflater
+		inflater.inflate(R.menu.main_menu, menu)
+		return true
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean
+	{
+		return when(item.itemId)
+		{
+			R.id.menu_restart_server_1 ->
+			{
+				restartServer(1)
+				true
+			}
+			R.id.menu_restart_server_2 ->
+			{
+				restartServer(2)
+				true
+			}
+			R.id.menu_set_password ->
+			{
+				PasswordFragment.show(this)
+				true
+			}
+			else                       -> super.onOptionsItemSelected(item)
+		}
 	}
 
 	override fun onResume()
@@ -114,6 +142,40 @@ class ServersActivity: AppCompatActivity()
 
 		MainScope().launch {
 			refresh()
+		}
+	}
+
+	private fun restartServer(serverId: Int)
+	{
+		val auth = PreferenceManager.getDefaultSharedPreferences(this).getString(PasswordFragment.KEY_PASSWORD, null)
+		val server = "official$serverId"
+
+		if(auth != null)
+		{
+			MainScope().launch {
+				val success = API.restartServer(auth, server)
+
+				withContext(Dispatchers.Main) {
+					if(success)
+					{
+						Snackbar.make(root_servers_view, "Server restarted successfully", Snackbar.LENGTH_LONG).show()
+					}
+					else
+					{
+						Snackbar.make(root_servers_view, "Failed to restart server", Snackbar.LENGTH_LONG).show()
+					}
+				}
+
+				if(success)
+				{
+					delay(1000)
+					doRefresh()
+				}
+			}
+		}
+		else
+		{
+			Snackbar.make(root_servers_view, "Password not set", Snackbar.LENGTH_LONG).show()
 		}
 	}
 

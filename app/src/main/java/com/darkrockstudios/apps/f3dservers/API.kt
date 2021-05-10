@@ -55,4 +55,31 @@ object API
 
 		return servers
 	}
+
+	suspend fun restartServer(auth: String, serverId: String): Boolean
+	{
+		var success = false
+
+		withContext(Dispatchers.IO) {
+			val url = "http://gameserver00.fugitivethegame.online/restart?auth=$auth&server=$serverId"
+
+			val request = Request.Builder()
+					.url(url)
+					.build()
+
+			try
+			{
+				client.newCall(request).execute().use { response: Response ->
+					success = response.isSuccessful
+				}
+			}
+			catch(e: IOException)
+			{
+				Log.e("abrown", "HTTP Error", e)
+				success = false
+			}
+		}
+
+		return success
+	}
 }
